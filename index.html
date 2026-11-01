@@ -1,0 +1,345 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive Mealy and Moore finite-state machine simulator">
+    <meta name="author" content="Reyansh Gupta">
+    <title>Automata Studio | Mealy–Moore Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#" class="brand">
+                <span class="brand-icon">A</span>
+                <span>Automata<span class="brand-light">Studio</span></span>
+            </a>
+
+            <p class="nav-heading">WORKSPACE</p>
+
+            <button class="nav-item active" type="button">
+                <span>◈</span> Machine Simulator
+            </button>
+
+            <button class="nav-item" id="theory-nav" type="button">
+                <span>⌘</span> Theory & Concepts
+            </button>
+
+            <div class="sidebar-bottom">
+                <div class="status-indicator"></div>
+                <div>
+                    <strong>Ready to simulate</strong>
+                    <p>Finite State Machines</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main workspace -->
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">THEORY OF COMPUTATION</p>
+                    <h1>Machine Simulator</h1>
+                    <p class="subtitle">
+                        Design, visualize and simulate finite-state machines.
+                    </p>
+                </div>
+
+                <span class="version-badge">PROJECT · 01</span>
+            </header>
+
+            <!-- Machine type selection -->
+            <section class="machine-switch panel">
+                <div>
+                    <h2>Choose your machine</h2>
+                    <p class="muted">
+                        Select a model to explore its behavior.
+                    </p>
+                </div>
+
+                <div class="segmented-control">
+                    <button class="machine-tab active"
+                            id="mealy-tab" type="button">
+                        Mealy Machine
+                    </button>
+
+                    <button class="machine-tab"
+                            id="moore-tab" type="button">
+                        Moore Machine
+                    </button>
+                </div>
+            </section>
+
+            <!-- Summary cards -->
+            <section class="stats-grid">
+                <article class="stat-card panel">
+                    <span class="stat-label">MACHINE TYPE</span>
+                    <h3 id="stat-type">Mealy</h3>
+                    <p>Output on transitions</p>
+                </article>
+
+                <article class="stat-card panel">
+                    <span class="stat-label">STATES</span>
+                    <h3 id="stat-states">2</h3>
+                    <p>Machine states</p>
+                </article>
+
+                <article class="stat-card panel">
+                    <span class="stat-label">INPUT ALPHABET</span>
+                    <h3 id="stat-alphabet">{0, 1}</h3>
+                    <p>Allowed input symbols</p>
+                </article>
+
+                <article class="stat-card panel">
+                    <span class="stat-label">SIMULATION</span>
+                    <h3 id="stat-status">Ready</h3>
+                    <p id="stat-status-detail">Waiting for input</p>
+                </article>
+            </section>
+
+            <!-- Main diagram and controls -->
+            <section class="workspace-grid">
+
+                <article class="panel diagram-panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">VISUALIZATION</p>
+                            <h2>State diagram</h2>
+                        </div>
+                        <span class="live-badge">
+                            <span></span> LIVE VIEW
+                        </span>
+                    </div>
+
+                    <div class="diagram-canvas" id="diagram">
+                        <!-- SVG state diagram will be rendered here -->
+                        <div class="diagram-placeholder">
+                            <div class="placeholder-icon">◎</div>
+                            <h3>Machine diagram</h3>
+                            <p>Your states and transitions will appear here.</p>
+                        </div>
+                    </div>
+
+                    <div class="diagram-legend">
+                        <span><i class="legend-dot start-dot"></i> Start state</span>
+                        <span><i class="legend-dot current-dot"></i> Current state</span>
+                        <span><i class="legend-dot final-dot"></i> Output state</span>
+                    </div>
+                </article>
+
+                <article class="panel controls-panel">
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">INPUT</p>
+                            <h2>Run simulation</h2>
+                        </div>
+                    </div>
+
+                    <label for="input-string">Input string</label>
+                    <input
+                        id="input-string"
+                        type="text"
+                        placeholder="e.g. 10110"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+                    <p class="input-hint">
+                        Use only the symbols 0 and 1.
+                    </p>
+
+                    <div class="example-row">
+                        <span>Try an example</span>
+                        <button id="example-btn" type="button">10110 ↗</button>
+                    </div>
+
+                    <div class="control-buttons">
+                        <button class="btn-primary" id="run-btn" type="button">
+                            ▶ Run machine
+                        </button>
+
+                        <button class="btn-secondary" id="step-btn" type="button">
+                            Step →
+                        </button>
+                    </div>
+
+                    <button class="reset-btn" id="reset-btn" type="button">
+                        ↺ Reset simulation
+                    </button>
+
+                    <div class="result-box" id="result-box" aria-live="polite">
+                        <span class="result-label">GENERATED OUTPUT</span>
+                        <div id="output-string" class="output-string">—</div>
+                        <p id="result-message">
+                            Enter an input string to begin.
+                        </p>
+                    </div>
+                </article>
+            </section>
+            
+            
+        <!-- Transition table -->
+        <section class="panel transition-panel">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">MACHINE DEFINITION</p>
+                    <h2>Transition table</h2>
+                    <p class="muted">
+                        Inspect the transition and output functions.
+                    </p>
+                </div>
+                <span class="step-counter" id="table-machine-label">
+                    MEALY
+                </span>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead id="transition-table-head"></thead>
+                    <tbody id="transition-table-body"></tbody>
+                </table>
+            </div>
+
+            <div class="transition-note" id="transition-note">
+                Outputs are associated with transitions.
+            </div>
+        </section>
+
+            <!-- Execution trace -->
+            <section class="panel trace-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">EXECUTION</p>
+                        <h2>Transition trace</h2>
+                        <p class="muted">
+                            Follow the machine's execution, one symbol at a time.
+                        </p>
+                    </div>
+
+                    <span class="step-counter" id="step-counter">
+                        0 steps
+                    </span>
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>STEP</th>
+                                <th>INPUT</th>
+                                <th>CURRENT STATE</th>
+                                <th>NEXT STATE</th>
+                                <th>OUTPUT</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="trace-body">
+                            <tr>
+                                <td colspan="5" class="empty-row">
+                                    No execution yet. Run a simulation to see the trace.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            
+            <!-- Formal Machine Definition -->
+            <section class="panel formal-panel">
+                <div class="section-heading">
+                    <div>
+                        <p class="eyebrow">THEORY OF COMPUTATION</p>
+                        <h2>Formal machine definition</h2>
+                        <p class="muted">
+                            The mathematical representation of the selected machine.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="formal-equation">
+                    M = (Q, Σ, Γ, δ, λ, q₀)
+                </div>
+
+                <div class="formal-grid">
+                    <div class="formal-item">
+                        <span>Q — States</span>
+                        <strong>{E, O}</strong>
+                    </div>
+
+                    <div class="formal-item">
+                        <span>Σ — Input alphabet</span>
+                        <strong>{0, 1}</strong>
+                    </div>
+
+                    <div class="formal-item">
+                        <span>Γ — Output alphabet</span>
+                        <strong>{0, 1}</strong>
+                    </div>
+
+                    <div class="formal-item">
+                        <span>q₀ — Initial state</span>
+                        <strong>E</strong>
+                    </div>
+                </div>
+
+                <div class="formal-item formal-function">
+                    <span>Transition function (δ)</span>
+                    <strong>δ(E,0)=E · δ(E,1)=O</strong>
+                    <strong>δ(O,0)=O · δ(O,1)=E</strong>
+                </div>
+
+                <div class="formal-item formal-function">
+                    <span id="formal-output-title">Output function (λ) — Mealy</span>
+                    <div id="formal-output-function">
+                        <strong>λ(E,0)=0 · λ(E,1)=1</strong>
+                        <strong>λ(O,0)=1 · λ(O,1)=0</strong>
+                    </div>
+                </div>
+
+                <div class="transition-note" id="formal-explanation">
+                    The machine tracks whether the number of 1s read so far is even or odd.
+                </div>
+            </section>
+
+            <!-- Theory panel -->
+            <section class="panel theory-panel" id="theory-section">
+                <p class="eyebrow">THEORY REFERENCE</p>
+                <h2>Understand the machine</h2>
+
+                <div class="theory-grid">
+                    <div class="theory-card">
+                        <h3>Mealy machine</h3>
+                        <p>
+                            Output depends on the current state and the
+                            input symbol.
+                        </p>
+                        <code>λ : Q × Σ → Γ</code>
+                    </div>
+
+                    <div class="theory-card">
+                        <h3>Moore machine</h3>
+                        <p>
+                            Output depends only on the current state.
+                        </p>
+                        <code>λ : Q → Γ</code>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <span>Automata Studio</span>
+                <span>Theory of Computation · Mealy–Moore Simulator</span>
+            </footer>
+
+        </main>
+    </div>
+</body>
+</html>
