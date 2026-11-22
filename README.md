@@ -92,6 +92,11 @@ The Moore output includes the initial state's output.
 - Machine transition table.
 - Formal mathematical definition.
 - Theory reference comparing both machine types.
+- Convert arbitrary Mealy machines to equivalent Moore machines.
+- Convert arbitrary Moore machines to equivalent Mealy machines.
+- Edit custom states, input alphabets, output alphabets, transitions, and outputs.
+- Inspect converted transition tables and state diagrams.
+- Verify output equivalence across reachable state pairs.
 - Dark-themed user interface.
 
 ## 6. Example
@@ -114,20 +119,17 @@ five input symbols.
 
 1. Download or clone the project.
 2. Open the project folder in Visual Studio Code.
-3. Open index.html using a browser or the Live Server
-   extension.
-4. Select Mealy Machine or Moore Machine.
-5. Enter a binary input string containing 0s and 1s.
-6. Click Run Machine to execute the complete simulation.
-7. Click Step to inspect individual transitions.
+3. Run `npm install` once, then run `npm start`.
+4. Open the local address printed by the server.
+5. Select Mealy Machine or Moore Machine.
+6. Enter a binary input string containing 0s and 1s.
+7. Click Run Machine to execute the complete simulation.
+8. Click Step to inspect individual transitions.
+9. Use Machine Conversion to build and convert a custom machine.
 
 No backend server or database is required.
 
-## 8. Author
-
-Developed and maintained by **Reyansh Gupta** ([@reyansh12345678890](https://github.com/reyansh12345678890)).
-
-## 9. Conclusion
+## 8. Conclusion
 
 AutomataStudio demonstrates the operation of Mealy and Moore
 machines through an interactive visual interface.

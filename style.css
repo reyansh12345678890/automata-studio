@@ -1029,3 +1029,39 @@ footer {
         font-size: 18px;
     }
 }
+
+/* =========================================
+   GENERAL MEALY / MOORE CONVERSION WORKSPACE
+   ========================================= */
+[hidden] { display: none !important; }
+.conversion-section { min-width: 0; }
+.conversion-panel { padding: 23px; margin-bottom: 20px; }
+.conversion-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.conversion-field { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+.conversion-field label { color: #c9cde0; font-size: 11px; font-weight: 650; }
+.conversion-field input, .conversion-field select, .conversion-cell select {
+    width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #343950; border-radius: 7px;
+    background: #0c0f18; color: var(--text); font: inherit; font-size: 12px;
+}
+.conversion-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 17px; }
+.example-conversion-btn { padding: 10px 13px; border: 1px solid #63d9e833; border-radius: 8px; color: var(--cyan); background: #63d9e80c; font-size: 11px; }
+.conversion-editor { margin-top: 20px; }
+.conversion-editor h3, .conversion-panel h3 { margin-bottom: 12px; font-size: 13px; }
+.conversion-cell { min-width: 120px; }
+.conversion-cell small { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; }
+.conversion-message { min-height: 18px; margin-top: 12px; color: var(--muted); font-size: 12px; }
+.conversion-message.error { color: var(--red); }
+.conversion-message.success { color: var(--green); }
+.conversion-result-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin: 25px 0 15px; }
+.conversion-explanation { padding-left: 22px; color: #c5c9da; font-size: 12px; }
+.conversion-explanation li { margin: 8px 0; }
+.conversion-diagram { overflow-x: auto; min-height: 160px; padding: 12px; border: 1px solid var(--border); border-radius: 9px; background: #10131e; }
+.conversion-diagram svg { display: block; max-width: 100%; margin: auto; }
+.equivalence-panel { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; }
+.equivalence-panel .conversion-message { flex-basis: 100%; margin-top: 0; }
+.conversion-source-status { margin: 0 0 16px; padding: 10px 12px; border: 1px solid #53d6a232; border-radius: 8px; background: #53d6a20b; color: #b9c6c1; font-size: 11px; }
+.conversion-source-status.custom { border-color: #ffbd6932; background: #ffbd690b; color: #d5c5a9; }
+.conversion-compare-controls { display: flex; align-items: center; gap: 8px; }
+.conversion-compare-controls label { color: var(--muted); font-size: 11px; }
+.conversion-compare-controls input { width: 120px; padding: 9px 11px; border: 1px solid #343950; border-radius: 7px; background: #0c0f18; color: var(--text); }
+@media (max-width: 760px) { .conversion-fields { grid-template-columns: 1fr; } .conversion-panel { padding: 17px; } }
